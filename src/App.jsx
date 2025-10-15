@@ -1,6 +1,5 @@
 import 'bulma/css/bulma.css';
 import './App.scss';
-// import { sortUserPlugins } from 'vite';
 import classN from 'classnames';
 import { useState } from 'react';
 
@@ -21,22 +20,18 @@ function prepareGoods(
   goods,
   { sortByAlphabet, sortByLength, reverseOrder } = {},
 ) {
-  let preparedGoods = [...goods];
+  const preparedGoods = [...goods];
 
   if (sortByAlphabet) {
-    preparedGoods.sort((good1, good2) => {
-      return good1.localeCompare(good2);
-    });
+    preparedGoods.sort((a, b) => a.localeCompare(b));
   }
 
   if (sortByLength) {
-    preparedGoods.sort((good1, good2) => {
-      return good1.length - good2.length;
-    });
+    preparedGoods.sort((a, b) => a.length - b.length);
   }
 
   if (reverseOrder) {
-    preparedGoods = preparedGoods.reverse();
+    preparedGoods.reverse();
   }
 
   return preparedGoods;
@@ -53,14 +48,18 @@ export const App = () => {
     reverseOrder,
   });
 
-  function sortGoodsByAlphabet(byAlphabet) {
-    setSortByAlphabet(byAlphabet);
+  function handleSortByAlphabet() {
+    setSortByAlphabet(prev => !prev);
     setSortByLength(false);
   }
 
-  function sortGoodsByLength(byLength) {
-    setSortByLength(byLength);
+  function handleSortByLength() {
+    setSortByLength(prev => !prev);
     setSortByAlphabet(false);
+  }
+
+  function handleReverse() {
+    setReverse(prev => !prev);
   }
 
   function resetSorting() {
@@ -74,7 +73,7 @@ export const App = () => {
       <div className="buttons">
         <button
           type="button"
-          onClick={() => sortGoodsByAlphabet(!sortByAlphabet)}
+          onClick={handleSortByAlphabet}
           className={classN('button', 'is-info', {
             'is-light': !sortByAlphabet,
           })}
@@ -84,17 +83,15 @@ export const App = () => {
 
         <button
           type="button"
-          onClick={() => sortGoodsByLength(!sortByLength)}
-          className={classN('button', 'is-info', {
-            'is-light': !sortByLength,
-          })}
+          onClick={handleSortByLength}
+          className={classN('button', 'is-info', { 'is-light': !sortByLength })}
         >
           Sort by length
         </button>
 
         <button
           type="button"
-          onClick={() => setReverse(!reverseOrder)}
+          onClick={handleReverse}
           className={classN('button', 'is-warning', {
             'is-light': !reverseOrder,
           })}
@@ -105,7 +102,7 @@ export const App = () => {
         {(sortByAlphabet || sortByLength || reverseOrder) && (
           <button
             type="button"
-            onClick={() => resetSorting()}
+            onClick={resetSorting}
             className="button is-danger is-light"
           >
             Reset
