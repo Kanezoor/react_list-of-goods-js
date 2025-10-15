@@ -42,14 +42,6 @@ function prepareGoods(
   return preparedGoods;
 }
 
-// function toggleSorting(sortCase) {
-//   if (sortByAlphabet) {
-//     setSortByLength(false);
-//   } else if (sortByLength) {
-//     setSortByAlphabet(false);
-//   }
-// }
-
 export const App = () => {
   const [sortByAlphabet, setSortByAlphabet] = useState(false);
   const [sortByLength, setSortByLength] = useState(false);
@@ -61,12 +53,28 @@ export const App = () => {
     reverseOrder,
   });
 
+  function sortGoodsByAlphabet(byAlphabet) {
+    setSortByAlphabet(byAlphabet);
+    setSortByLength(false);
+  }
+
+  function sortGoodsByLength(byLength) {
+    setSortByLength(byLength);
+    setSortByAlphabet(false);
+  }
+
+  function resetSorting() {
+    setSortByAlphabet(false);
+    setSortByLength(false);
+    setReverse(false);
+  }
+
   return (
     <div className="section content">
       <div className="buttons">
         <button
           type="button"
-          onClick={() => setSortByAlphabet(!sortByAlphabet)}
+          onClick={() => sortGoodsByAlphabet(!sortByAlphabet)}
           className={classN('button', 'is-info', {
             'is-light': !sortByAlphabet,
           })}
@@ -76,7 +84,7 @@ export const App = () => {
 
         <button
           type="button"
-          onClick={() => setSortByLength(!sortByLength)}
+          onClick={() => sortGoodsByLength(!sortByLength)}
           className={classN('button', 'is-info', {
             'is-light': !sortByLength,
           })}
@@ -97,11 +105,7 @@ export const App = () => {
         {(sortByAlphabet || sortByLength || reverseOrder) && (
           <button
             type="button"
-            onClick={() =>
-              setReverse(false) ||
-              setSortByLength(false) ||
-              setSortByAlphabet(false)
-            }
+            onClick={() => resetSorting()}
             className="button is-danger is-light"
           >
             Reset
